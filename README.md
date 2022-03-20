@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/:license-mit-blue.svg)](https://rootulp.mit-license.org)
 
-eth-pool is a learning exercise that provides a pool for users to deposit into and earn rewards from. The pool operator sporadically deposits rewards into the pool. Rewards are distributed to depositors proportional to their share of deposits in the pool.
+EthPool is a learning exercise that provides a pool for users to deposit into and earn rewards from. The pool operator will sporadically deposit rewards into the pool. Rewards are distributed to depositors proportional to their share of deposits in the pool.
 
 Motivated by: https://github.com/edgeandnode/contracts-challenge/tree/exercise-4
 
