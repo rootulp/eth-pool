@@ -7,7 +7,7 @@ contract EthPool is Ownable {
 
     // State
     uint256 public totalBalance;
-    address[] public users;
+    address[] public depositors;
     mapping(address => uint) public balances;
 
     // Events
@@ -25,7 +25,7 @@ contract EthPool is Ownable {
 
         bool hasValue = balances[msg.sender] > 0;
         if (!hasValue){
-            users.push(msg.sender);
+            depositors.push(msg.sender);
         }
 
         balances[msg.sender] += msg.value;
@@ -36,8 +36,8 @@ contract EthPool is Ownable {
     }
 
     function depositRewards() external payable onlyOwner() {
-        for (uint i = 0; i < users.length; i++) {
-            address user = users[i];
+        for (uint i = 0; i < depositors.length; i++) {
+            address user = depositors[i];
             balances[user] += balances[user] * msg.value / totalBalance;
         }
 
@@ -51,7 +51,7 @@ contract EthPool is Ownable {
 
         balances[msg.sender] = 0;
         totalBalance -= balance;
-        // TODO: we may remove msg.sender from users here
+        // TODO: we may remove msg.sender from depositors here
 
         (bool success, ) = msg.sender.call{value: balance}("");
         require(success, "Withdraw failed");
