@@ -50,6 +50,7 @@ contract EthPool is Ownable {
         require(balance > 0, "User balance is 0");
 
         balances[msg.sender] = 0;
+        totalBalance -= balance;
         (bool success, ) = msg.sender.call{value: balance}("");
         require(success, "Withdraw failed");
         emit Withdraw(msg.sender, balance);
