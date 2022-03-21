@@ -5,15 +5,19 @@ import "openzeppelin-contracts/contracts/access/Ownable.sol";
 
 contract EthPool is Ownable {
 
-    event RewardsDeposited(uint amount);
     uint256 public balance;
+    mapping(address => uint) public balances;
 
     constructor() {
         balance = 0;
     }
 
+    function deposit() external payable {
+        balances[msg.sender] += msg.value;
+        balance += msg.value;
+    }
+
     function depositRewards() external payable onlyOwner() {
         balance += msg.value;
-        emit RewardsDeposited(msg.value);
     }
 }

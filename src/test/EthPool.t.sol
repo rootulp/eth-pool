@@ -15,6 +15,8 @@ contract EthPoolTest is DSTest {
 
     function setUp() public {
         ethPool = new EthPool();
+        cheats.deal(alice, 10 ether);
+        cheats.deal(bob, 10 ether);
     }
 
     function testOwner() public {
@@ -30,8 +32,25 @@ contract EthPoolTest is DSTest {
         cheats.prank(alice);
         ethPool.depositRewards{value: 1 ether}();
     }
+
+    function testOneDeposit() public {
+        cheats.prank(alice);
+        ethPool.deposit{value: 1 ether}();
+        assertEq(ethPool.balances(alice), 1 ether);
+    }
+
+    function testTwoDeposits() public {
+        cheats.prank(alice);
+        ethPool.deposit{value: 1 ether}();
+        cheats.prank(bob);
+        ethPool.deposit{value: 2 ether}();
+
+        assertEq(ethPool.balances(alice), 1 ether);
+        assertEq(ethPool.balances(bob), 2 ether);
+    }
 }
 
 interface CheatCodes {
     function prank(address) external;
+    function deal(address who, uint256 newBalance) external;
 }
