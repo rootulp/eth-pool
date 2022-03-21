@@ -11,9 +11,9 @@ contract EthPool is Ownable {
     mapping(address => uint) public balances;
 
     // Events
-    event RewardDeposit(uint amount);
+    event DistributeReward(uint amount);
     event Deposit(address indexed from, uint amount);
-    event Withdraw(address indexed to, uint amount);
+    event Withdrawal(address indexed to, uint amount);
 
     constructor() {
         totalBalance = 0;
@@ -35,26 +35,26 @@ contract EthPool is Ownable {
         emit Deposit(msg.sender, msg.value);
     }
 
-    function depositRewards() external payable onlyOwner() {
+    function distributeReward() external payable onlyOwner() {
         for (uint i = 0; i < depositors.length; i++) {
             address user = depositors[i];
             balances[user] += balances[user] * msg.value / totalBalance;
         }
 
         totalBalance += msg.value;
-        emit RewardDeposit(msg.value);
+        emit DistributeReward(msg.value);
     }
 
     function withdraw() public payable {
         uint256 balance = balances[msg.sender];
-        require(balance > 0, "User balance is 0");
+        require(balance > 0, "User balance is zero");
 
         balances[msg.sender] = 0;
         totalBalance -= balance;
         // TODO: we may remove msg.sender from depositors here
 
         (bool success, ) = msg.sender.call{value: balance}("");
-        require(success, "Withdraw failed");
-        emit Withdraw(msg.sender, balance);
+        require(success, "Withdrawal failed");
+        emit Withdrawal(msg.sender, balance);
     }
 }

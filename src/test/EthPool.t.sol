@@ -25,14 +25,14 @@ contract EthPoolTest is DSTest {
         assertEq(owner, ethPool.owner());
     }
 
-    function testDepositRewardsAsOwner() public {
-        ethPool.depositRewards{value: 1 ether}();
+    function testDistributeRewardAsOwner() public {
+        ethPool.distributeReward{value: 1 ether}();
         assertEq(ethPool.totalBalance(), 1 ether);
     }
 
-    function testFailDepositRewardsAsAlice() public {
+    function testFailDistributeRewardAsAlice() public {
         cheats.prank(alice);
-        ethPool.depositRewards{value: 1 ether}();
+        ethPool.distributeReward{value: 1 ether}();
     }
 
     function testOneDeposit() public {
@@ -51,13 +51,13 @@ contract EthPoolTest is DSTest {
         assertEq(ethPool.balances(bob), 1 ether);
     }
 
-    function testDepositRewards() public {
+    function testDistributeReward() public {
         cheats.prank(alice);
         ethPool.deposit{value: 1 ether}();
         cheats.prank(bob);
         ethPool.deposit{value: 1 ether}();
 
-        ethPool.depositRewards{value: 1 ether}();
+        ethPool.distributeReward{value: 1 ether}();
 
         assertEq(ethPool.balances(alice), 1.5 ether);
         assertEq(ethPool.balances(bob), 1.5 ether);
@@ -69,7 +69,7 @@ contract EthPoolTest is DSTest {
         cheats.prank(bob);
         ethPool.deposit{value: 3 ether}();
 
-        ethPool.depositRewards{value: 1 ether}();
+        ethPool.distributeReward{value: 1 ether}();
 
         cheats.prank(alice);
         ethPool.withdraw();
@@ -84,15 +84,24 @@ contract EthPoolTest is DSTest {
         cheats.prank(bob);
         ethPool.deposit{value: 3 ether}();
 
-        ethPool.depositRewards{value: 1 ether}();
+        ethPool.distributeReward{value: 1 ether}();
 
         cheats.prank(charlie);
         ethPool.deposit{value: 2 ether}();
         assertEq(ethPool.balances(charlie), 2 ether);
+    }
+
+    function testWithdrawRevertsIfBalanceIsZero() public {
+        cheats.expectRevert(
+            bytes("User balance is zero")
+        );
+        cheats.prank(alice);
+        ethPool.withdraw();
     }
 }
 
 interface CheatCodes {
     function prank(address) external;
     function deal(address who, uint256 newBalance) external;
+    function expectRevert(bytes calldata) external;
 }
