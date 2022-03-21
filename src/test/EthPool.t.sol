@@ -12,11 +12,13 @@ contract EthPoolTest is DSTest {
     address constant owner = 0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84;
     address constant alice = address(0xCAFE);
     address constant bob = address(0xBEEF);
+    address constant charlie = address(0xFEED);
 
     function setUp() public {
         ethPool = new EthPool();
         cheats.deal(alice, 10 ether);
         cheats.deal(bob, 10 ether);
+        cheats.deal(charlie, 10 ether);
     }
 
     function testOwner() public {
@@ -74,6 +76,19 @@ contract EthPoolTest is DSTest {
         assertEq(ethPool.balances(alice), 0 ether);
         assertEq(ethPool.totalBalance(), 3.75 ether);
         assertEq(address(alice).balance, 10.25 ether);
+    }
+
+    function testNoRewardsForCharlie() public {
+        cheats.prank(alice);
+        ethPool.deposit{value: 1 ether}();
+        cheats.prank(bob);
+        ethPool.deposit{value: 3 ether}();
+
+        ethPool.depositRewards{value: 1 ether}();
+
+        cheats.prank(charlie);
+        ethPool.deposit{value: 2 ether}();
+        assertEq(ethPool.balances(charlie), 2 ether);
     }
 }
 
