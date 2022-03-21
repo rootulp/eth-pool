@@ -22,16 +22,18 @@ Motivated by: https://github.com/edgeandnode/contracts-challenge/tree/exercise-4
 ## Local Development
 
 1. Clone this repo
+1. Install git submodule dependencies: `forge install`
 
 ### Helpful Commands
 
 ```sh
-# Install git submodule dependencies
-forge install
-
 forge build
 forge test
 ```
+
+## Contribute
+
+I'd appreciate any feedback via [issues](https://github.com/rootulp/eth-pool/issues/new).
 
 ## Acknowledgements
 
