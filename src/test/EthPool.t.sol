@@ -7,9 +7,11 @@ import "../EthPool.sol";
 contract EthPoolTest is DSTest {
 
     EthPool ethPool;
-    address owner = 0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84;
-    // address alice = address(0xCAFE);
-    // address bob = address(0xBEEF);
+    CheatCodes cheats = CheatCodes(HEVM_ADDRESS);
+
+    address constant owner = 0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84;
+    address constant alice = address(0xCAFE);
+    address constant bob = address(0xBEEF);
 
     function setUp() public {
         ethPool = new EthPool();
@@ -19,8 +21,17 @@ contract EthPoolTest is DSTest {
         assertEq(owner, ethPool.owner());
     }
 
-    function testOwnerDepositRewards() public {
+    function testDepositRewardsAsOwner() public {
         ethPool.depositRewards{value: 1 ether}();
         assertEq(ethPool.balance(), 1 ether);
     }
+
+    function testFailDepositRewardsAsAlice() public {
+        cheats.prank(alice);
+        ethPool.depositRewards{value: 1 ether}();
+    }
+}
+
+interface CheatCodes {
+    function prank(address) external;
 }
