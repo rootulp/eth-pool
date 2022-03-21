@@ -53,12 +53,12 @@ contract EthPoolTest is DSTest {
         cheats.prank(alice);
         ethPool.deposit{value: 1 ether}();
         cheats.prank(bob);
-        ethPool.deposit{value: 3 ether}();
+        ethPool.deposit{value: 1 ether}();
 
         ethPool.depositRewards{value: 1 ether}();
 
-        assertEq(ethPool.balances(alice), 1.25 ether);
-        assertEq(ethPool.balances(bob), 3.75 ether);
+        assertEq(ethPool.balances(alice), 1.5 ether);
+        assertEq(ethPool.balances(bob), 1.5 ether);
     }
 
     function testWithdrawAsAlice() public {
