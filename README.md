@@ -22,20 +22,46 @@ EthPool is a learning exercise motivated by this [challenge](./challenge.md). Th
 ## Local Development
 
 1. Clone this repo
-1. Install git submodule dependencies: `forge install`
+1. Create a project on [Alchemy](https://www.alchemy.com/)
+
+### Initial Setup
+
+```sh
+# Install git submodule dependencies
+forge install
+
+# Copy the default .env file
+cp .env.default .env
+
+# Populate .env with ETH_RPC_URL from Alchemy and PRIVATE_KEY from a testnet wallet
+vim .env
+
+# Source the .env file
+source .env
+```
 
 ### Helpful Commands
 
 ```sh
+# Build
 forge build
+
+# Test
 forge test
+
+# Deploy
+forge create --rpc-url $ETH_RPC_URL --private-key $PRIVATE_KEY src/EthPool.sol:EthPool
 ```
+
+## Deployments
+
+Network | Address
+------- | -------
+Goerli  | 0x69727e6c77dff8d16537887b8ebe0609f8548c35
 
 ## To-do
 
-- [ ] Add natspec comments
 - [ ] Consider refactoring EthPool to not use a dynamically sized array
-- [ ] Deploy contract to testnet
 - [ ] Verify on Etherscan
 
 ## Contribute
