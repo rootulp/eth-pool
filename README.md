@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/:license-mit-blue.svg)](https://rootulp.mit-license.org)
 
-EthPool is a learning exercise motivated by this [challenge](./challenge.md). The goal is to write a contract (named "EthPool") that allows users to deposit and withdraw ETH from. Ocasionally, a pool operator will deposit rewards (also denominated in ETH) into the pool. Rewards are distributed to depositors based on their percentage share of the pool.
+EthPool is a learning exercise motivated by this [challenge](./challenge.md). The goal is to write a contract (named "EthPool") that allows users to deposit and withdraw ETH from. Occasionally, a pool operator will deposit rewards (also denominated in ETH) into the pool. Rewards are distributed to depositors based on their percentage share of the pool.
 
 ## Examples
 
