@@ -21,8 +21,11 @@ EthPool is a learning exercise motivated by this [challenge](./challenge.md). Th
 
 ## Local Development
 
+### Prerequisites
+
 1. Clone this repo
 1. Create a project on [Alchemy](https://www.alchemy.com/)
+1. Create an API key on [Etherscan](https://etherscan.io/myapikey)
 
 ### Initial Setup
 
@@ -49,8 +52,11 @@ forge build
 # Test
 forge test
 
-# Deploy
+# Deploy contract
 forge create --rpc-url $ETH_RPC_URL --private-key $PRIVATE_KEY src/EthPool.sol:EthPool
+
+# Verify on Etherscan
+forge verify-contract --chain-id $CHAIN_ID --num-of-optimizations 200 --compiler-version $COMPILER_VERSION $CONTRACT_ADDRESS src/EthPool.sol:EthPool $ETHERSCAN_API_KEY
 ```
 
 ## Deployments
@@ -62,7 +68,6 @@ Goerli  | 0x69727e6c77dff8d16537887b8ebe0609f8548c35
 ## To-do
 
 - [ ] Consider refactoring EthPool to not use a dynamically sized array
-- [ ] Verify on Etherscan
 
 ## Contribute
 
