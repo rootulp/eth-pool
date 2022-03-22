@@ -16,6 +16,11 @@ contract EthPoolTest is DSTest {
 
     function setUp() public {
         ethPool = new EthPool();
+
+        cheats.label(alice, "alice");
+        cheats.label(bob, "bob");
+        cheats.label(charlie, "charlie");
+
         cheats.deal(alice, 10 ether);
         cheats.deal(bob, 10 ether);
         cheats.deal(charlie, 10 ether);
@@ -125,6 +130,7 @@ interface CheatCodes {
     function assume(bool) external;
     function deal(address who, uint256 newBalance) external;
     function expectRevert(bytes calldata) external;
+    function label(address addr, string calldata label) external;
     function prank(address) external;
     function startPrank(address) external;
 }

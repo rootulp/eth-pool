@@ -33,7 +33,6 @@ forge test
 
 ## To-do
 
-- [ ] Add fuzz tests
 - [ ] Add natspec comments
 - [ ] Consider refactoring EthPool to not use a dynamically sized array
 - [ ] Deploy contract to testnet
