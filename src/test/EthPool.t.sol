@@ -98,10 +98,32 @@ contract EthPoolTest is DSTest {
         cheats.prank(alice);
         ethPool.withdraw();
     }
+
+    function testDepositValueOfZero() public {
+        cheats.expectRevert(
+            bytes("Value must be greater than zero")
+        );
+        cheats.prank(alice);
+        ethPool.deposit{value: 0}();
+    }
+
+    function testDepositFuzzAmount(uint amount) public {
+        cheats.assume(amount > 0 ether);
+        cheats.deal(alice, amount);
+        uint preBalance = alice.balance;
+        cheats.startPrank(alice);
+        ethPool.deposit{value: amount}();
+        ethPool.withdraw();
+
+        uint postBalance = alice.balance;
+        assertEq(preBalance, postBalance);
+    }
 }
 
 interface CheatCodes {
-    function prank(address) external;
+    function assume(bool) external;
     function deal(address who, uint256 newBalance) external;
     function expectRevert(bytes calldata) external;
+    function prank(address) external;
+    function startPrank(address) external;
 }

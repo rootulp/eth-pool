@@ -21,7 +21,7 @@ contract EthPool is Ownable {
 
     function deposit() external payable {
         require(msg.sender != address(0));
-        require(msg.value != 0);
+        require(msg.value > 0, "Value must be greater than zero");
 
         bool hasValue = balances[msg.sender] > 0;
         if (!hasValue){
