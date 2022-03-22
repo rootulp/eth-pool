@@ -51,6 +51,26 @@ contract EthPoolTest is DSTest {
         assertEq(ethPool.balances(bob), 1 ether);
     }
 
+    function testDepositZeroValue() public {
+        cheats.expectRevert(
+            bytes("Value must be greater than zero")
+        );
+        cheats.prank(alice);
+        ethPool.deposit{value: 0}();
+    }
+
+    function testDepositFuzzValue(uint amount) public {
+        cheats.assume(amount > 0 ether);
+        cheats.deal(alice, amount);
+        uint preBalance = alice.balance;
+        cheats.startPrank(alice);
+        ethPool.deposit{value: amount}();
+        ethPool.withdraw();
+
+        uint postBalance = alice.balance;
+        assertEq(preBalance, postBalance);
+    }
+
     function testDistributeReward() public {
         cheats.prank(alice);
         ethPool.deposit{value: 1 ether}();
@@ -99,25 +119,6 @@ contract EthPoolTest is DSTest {
         ethPool.withdraw();
     }
 
-    function testDepositValueOfZero() public {
-        cheats.expectRevert(
-            bytes("Value must be greater than zero")
-        );
-        cheats.prank(alice);
-        ethPool.deposit{value: 0}();
-    }
-
-    function testDepositFuzzAmount(uint amount) public {
-        cheats.assume(amount > 0 ether);
-        cheats.deal(alice, amount);
-        uint preBalance = alice.balance;
-        cheats.startPrank(alice);
-        ethPool.deposit{value: amount}();
-        ethPool.withdraw();
-
-        uint postBalance = alice.balance;
-        assertEq(preBalance, postBalance);
-    }
 }
 
 interface CheatCodes {
